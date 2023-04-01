@@ -73,6 +73,7 @@ namespace Sorter
             //Call sortfunction in sort type selected
             //var sorterSelected = new IterativeSort();
             var sorterSelected = new ShellSort();
+            //var sorterSelected = new QuickSort();
             //var sorterSelected = new BogoSort();
             await sorterSelected.startSort(displayList);
             

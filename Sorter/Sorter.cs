@@ -17,14 +17,14 @@ namespace Sorter
             {
                 await Task.Run(() =>
                 {
-                    sortingMethod();
+                    this.sortingMethod(displayList);
                     keepLooping = isListSorted(displayList);
-                    System.Threading.Thread.Sleep(1);
+                    //System.Threading.Thread.Sleep(1);
                 });
             }
         }
 
-        public void sortingMethod() { }
+        public virtual void sortingMethod(List<int> displayList) { }
 
         internal bool isListSorted(List<int> displayList)
         {

@@ -11,32 +11,21 @@ namespace Sorter
 {
     internal class ShellSort : Sorter
     {
-        public async Task startSort(List<int> displayList)
+        
+        public override void sortingMethod(List<int> displayList)
         {
-            bool keepLooping = true;
-            while (keepLooping)
+            int[] gaps = { 701, 301, 132, 57, 23, 10, 4, 1 };
+
+            for (int k = 0; k < gaps.Length; k++)
             {
-                await Task.Run(() =>
+                var gap = gaps[k];
+                for (var start = 0; start < displayList.Count && start < gap; start++)
                 {
-                    int[] gaps = {701, 301, 132, 57, 23, 10, 4, 1};
-
-                    for(int k = 0; k < gaps.Length; k++)
-                    {
-                        var gap = gaps[k];
-                        for(var start = 0; start < displayList.Count && start < gap; start++)
-                        {
-                            insertSortGap(displayList, start, gap);
-                        }
-                    }
-                    keepLooping = base.isListSorted(displayList);
-                    System.Threading.Thread.Sleep(1);
-                });
-
-
+                    insertSortGap(displayList, start, gap);
+                }
             }
+            System.Threading.Thread.Sleep(1);
         }
-
-
         public void insertSortGap(List<int> displayList,int start, int gap)
         {
             try

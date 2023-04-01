@@ -11,18 +11,18 @@ namespace Sorter
     {
         public BogoSort() { }
 
-        public async Task startSort(List<int> displayList)
+        public override void sortingMethod(List<int> displayList)
         {
-            bool keepLooping = true;
-            while (keepLooping)
-            {
-                await Task.Run(() =>
-                {
+            Random rng = new Random();
+            int n = displayList.Count;
 
-                   
-                    keepLooping = base.isListSorted(displayList);
-                    System.Threading.Thread.Sleep(1);
-                });
+            while(n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                int value = displayList[k];
+                displayList[k] = displayList[n];
+                displayList[n] = value;
             }
         }
     }
