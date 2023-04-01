@@ -20,8 +20,8 @@ namespace Sorter
         public System.Windows.Forms.Timer timer1;
         public MainForm()
         {
-            Thread formThread = new Thread(InitializeComponent);
-            formThread.Start();
+            InitializeComponent();
+
 
             Thread uiThread = new Thread(graphUpdate);
             uiThread.Start();
@@ -30,6 +30,8 @@ namespace Sorter
 
             chrtMain.Series.Clear();
             chrtMain.ChartAreas[0].AxisX.Title = "Count";
+
+            uiThread.Join();
         }
         public void graphUpdate()
         {
