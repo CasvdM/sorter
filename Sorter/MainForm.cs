@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -16,33 +17,38 @@ namespace Sorter
     public partial class MainForm : Form
     {
         List<int> displayList = new List<int>();
-        private Timer timer1;
+        public System.Windows.Forms.Timer timer1;
         public MainForm()
         {
-            InitializeComponent();
+            Thread formThread = new Thread(InitializeComponent);
+            formThread.Start();
 
-            timer1 = new Timer();
-            timer1.Interval = (1000/60);
-            timer1.Tick += timer1_Tick;
-            timer1.Enabled = true;
+            Thread uiThread = new Thread(graphUpdate);
+            uiThread.Start();
+
+
 
             chrtMain.Series.Clear();
             chrtMain.ChartAreas[0].AxisX.Title = "Count";
         }
-        public async void timer1_Tick(object sender, EventArgs e)
+        public void graphUpdate()
         {
-            chrtMain.BeginInvoke(new Action(() =>
-            {
-                chrtMain.Series.Clear();
-                Series series = chrtMain.Series.Add("Values");
-                chrtMain.ChartAreas[0].AxisX.Minimum = 0;
-                chrtMain.ChartAreas[0].AxisX.Maximum = displayList.Count;
+            timer1 = new System.Windows.Forms.Timer();
+            timer1.Interval = (1000 / 60);
+            timer1.Tick += timer1_Tick;
+            timer1.Enabled = true;
+        }
+        public void timer1_Tick(object sender, EventArgs e)
+        {
+            chrtMain.Series.Clear();
+            Series series = chrtMain.Series.Add("Values");
+            chrtMain.ChartAreas[0].AxisX.Minimum = 0;
+            chrtMain.ChartAreas[0].AxisX.Maximum = displayList.Count;
 
-                for (int i = 0; i < displayList.Count; i++)
-                {
-                    series.Points.AddXY(i + 1, displayList[i]);
-                }
-            }));
+            for (int i = 0; i < displayList.Count; i++)
+            {
+                series.Points.AddXY(i + 1, displayList[i]);
+            }
         }
         private void btnGenerate_Click(object sender, EventArgs e)
         {
